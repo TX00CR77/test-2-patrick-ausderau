@@ -1,0 +1,56 @@
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+
+
+
+#content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.caption p  {
+    white-space: nowrap;
+    width: 12em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100px;
+    width: 200px;
+    transition: width 1s, height 1s;
+}
+
+#map:hover {
+    height: 300px;
+    width: 500px
+}
+
+
+.modal-body figure {
+    position: relative;
+}
+
+.modal-body img {
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
