@@ -39,7 +39,7 @@ const update = () => {
         });
 };
 
-function initMap() {
+const initMap = () => {
     map = new google.maps.Map(document.getElementById('map'), {
         zoom: 11
     });
@@ -61,6 +61,7 @@ const resetMap = () => {
 
 
 document.querySelector('#map').addEventListener('transitionend', resetMap);
+initMap();
 
 
 
