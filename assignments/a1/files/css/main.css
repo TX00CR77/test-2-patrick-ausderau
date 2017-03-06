@@ -5,19 +5,8 @@
    ========================================================================== */
 
 
-
-
-#content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-}
-
-.caption p  {
-    white-space: nowrap;
-    width: 12em;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.card-img-top {
+    object-fit: cover;
 }
 
 #map {
