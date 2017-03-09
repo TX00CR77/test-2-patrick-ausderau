@@ -3,73 +3,42 @@ let map = null;
 let marker = null;
 let selectedArticle = null;
 
-// get the modal by ID
-const myModal = document.getElementById('details');
-
 const update = () => {
     fetch('files/data.json')
         .then(response => {
-            return response.json();
-        })
-        .then(articles => {
-            let html = '<div class="card-group">';
-            for (let [index, article] of articles.entries()) {
-                html += `
+        return response.json();
+})
+.then(articles => {
+        let html = '<div class="card-deck">';
+    for (let [index, article] of articles.entries()) {
+        html += `
                         <article class="card">
-                            <img class="card-img-top" src="${article.thumbnail}" alt="${article.title}">
+                            <img class="card-img-top" src="${article.thumbnail}" alt="">
                             <div class="card-block">
-                                <div class="row">
-                                    <div class="col">
-                                        <h3 class="card-title">${article.title}</h3>
-                                    </div>
-                                    <div class="col">
-                                        <small class="text-muted">${article.time}</small>
-                                    </div>
-                                </div>
+                                <h3 class="card-title">${article.title}</h3>
                                 <p class="card-text">${article.details}</p>
                             </div>
                             <div class="card-footer">
-                                <p><a class="btn btn-primary" id="myModalTrigger" data-toggle="modal" href="#myModal" data-index="${index}">View</a></p>
+                                <p><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal" role="button" data-index="${index}">View</a></p>
                             </div>
                         </article>
                         `;
-            }
-            html += '</div>';
-            document.querySelector('#content').innerHTML = html;
-            buttons = document.querySelectorAll('#content article a');
-            for (let button of buttons) {
-                button.addEventListener('click', (evt) => {
-                    evt.preventDefault();
-                    selectedArticle = articles[evt.target.dataset.index];
-                    const options = {
-                        content: `<div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                                aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title">${selectedArticle.title}</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <figure>
-                                            <a href="${selectedArticle.original}"><img src="${selectedArticle.image}" alt="${selectedArticle.title}"></a>
-                                            <div id="map" class="small-map"></div>
-                                        </figure>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div>`,
-                        backdrop: 'true',
-                        keyboard: true
-                    };
-                    const myModalInstance = new Modal(myModal, options);
-                    initMap();
-                    document.querySelector('#map').addEventListener('transitionend', resetMap);
-                    myModalInstance.show();
-                    console.log(myModalInstance);
-                    myModal.addEventListener('shown.bs.modal', resetMap, false);
-                    myModal.addEventListener('hidden.bs.modal', hideStreetView, false);
-                });
-            }
+    }
+    document.querySelector('#content').innerHTML = html+'</div>';
+    // console.log(JSON.parse(document.querySelector('#content a').dataset.crd));
+    buttons = document.querySelectorAll('#content article a');
+    for (let button of buttons) {
+        button.addEventListener('click', (evt) => {
+            evt.preventDefault();
+        // console.log(evt.target);
+        selectedArticle = articles[evt.target.dataset.index];
+        document.querySelector('.modal-body img').src = selectedArticle.image;
+        document.querySelector('.modal-title').innerHTML = selectedArticle.title;
+        $('#myModal').on('shown.bs.modal', resetMap);
+    });
+    }
 
-        });
+});
 };
 
 const initMap = () => {
@@ -79,7 +48,8 @@ const initMap = () => {
     marker = new google.maps.Marker({
         map: map
     });
-};
+    update();
+}
 
 const resetMap = () => {
     const coords = selectedArticle.coordinates;
@@ -91,13 +61,11 @@ const resetMap = () => {
     });
 };
 
-const hideStreetView = () => {
-    map.getStreetView().setVisible(false);
-};
+
+document.querySelector('#map').addEventListener('transitionend', resetMap);
+initMap();
 
 
-
-update();
 
 
 
